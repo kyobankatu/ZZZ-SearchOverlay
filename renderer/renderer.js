@@ -96,7 +96,13 @@ const areaResult = document.getElementById('area-result');
 
 areaBtn.addEventListener('click', async () => {
     areaBtn.disabled = true;
-    await window.electronAPI.startAreaCapture();
+    const result = await window.electronAPI.startAreaCapture();
+    if (result && result.error === 'screen-permission-denied') {
+        areaBtn.disabled = false;
+        areaResult.innerHTML =
+            '<span class="error">Screen recording permission is required.<br>' +
+            'Please enable it in System Settings → Privacy &amp; Security → Screen Recording, then restart the app.</span>';
+    }
 });
 
 // Receive cropped image from main process after area selection
@@ -161,6 +167,14 @@ function renderScanResult(data) {
         const el = document.createElement('div');
         el.className = 'scan-item';
         el.textContent = item;
+        el.addEventListener('click', () => {
+            searchInput.value = item;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector('[data-tab="text"]').classList.add('active');
+            document.getElementById('tab-text').classList.add('active');
+            performTextSearch();
+        });
         container.appendChild(el);
     });
 

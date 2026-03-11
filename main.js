@@ -4,9 +4,13 @@ const {
     globalShortcut,
     ipcMain,
     screen,
-    desktopCapturer
+    desktopCapturer,
+    systemPreferences
 } = require('electron');
 const path = require('path');
+const { execFile } = require('child_process');
+const fs = require('fs');
+const os = require('os');
 
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000';
 
@@ -71,23 +75,53 @@ app.on('window-all-closed', () => {
  * Hides the main window, takes a screenshot, then opens the capture window.
  */
 ipcMain.handle('start-area-capture', async () => {
+    // On macOS, screen recording permission is required.
+    // There is no runtime dialog — the user must grant access in System Settings.
+    if (process.platform === 'darwin') {
+        const status = systemPreferences.getMediaAccessStatus('screen');
+        if (status !== 'granted') {
+            return { error: 'screen-permission-denied' };
+        }
+    }
+
     mainWindow.hide();
 
     // Wait for the overlay to disappear before taking the screenshot
     await new Promise(resolve => setTimeout(resolve, 150));
 
     const { width, height } = screen.getPrimaryDisplay().size;
-    const sources = await desktopCapturer.getSources({
-        types: ['screen'],
-        thumbnailSize: { width, height }
-    });
+    let screenshotDataUrl;
 
-    if (!sources.length) {
-        mainWindow.show();
-        return false;
+    if (process.platform === 'darwin') {
+        // desktopCapturer can return a black thumbnail on macOS even when
+        // screen recording is granted (known Electron issue for terminal-launched apps).
+        // Use the OS-native screencapture command instead.
+        const tempFile = path.join(os.tmpdir(), `zzz-cap-${Date.now()}.png`);
+        try {
+            await new Promise((resolve, reject) => {
+                execFile('screencapture', ['-x', '-m', tempFile], (err) => {
+                    if (err) { reject(err); } else { resolve(); }
+                });
+            });
+            const buf = fs.readFileSync(tempFile);
+            screenshotDataUrl = `data:image/png;base64,${buf.toString('base64')}`;
+        } catch (_err) {
+            mainWindow.show();
+            return false;
+        } finally {
+            try { fs.unlinkSync(tempFile); } catch (_) {}
+        }
+    } else {
+        const sources = await desktopCapturer.getSources({
+            types: ['screen'],
+            thumbnailSize: { width, height }
+        });
+        if (!sources.length) {
+            mainWindow.show();
+            return false;
+        }
+        screenshotDataUrl = sources[0].thumbnail.toDataURL();
     }
-
-    const screenshotDataUrl = sources[0].thumbnail.toDataURL();
 
     captureWindow = new BrowserWindow({
         width,
