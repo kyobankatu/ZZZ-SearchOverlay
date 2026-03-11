@@ -5,7 +5,8 @@ const {
     ipcMain,
     screen,
     desktopCapturer,
-    systemPreferences
+    systemPreferences,
+    shell
 } = require('electron');
 const path = require('path');
 const { execFile } = require('child_process');
@@ -179,3 +180,8 @@ ipcMain.handle('cancel-capture', async () => {
  * IPC: Returns the configured API base URL.
  */
 ipcMain.handle('get-api-url', () => API_BASE_URL);
+
+/**
+ * IPC: Opens a URL in the system default browser.
+ */
+ipcMain.handle('open-external', (_event, url) => shell.openExternal(url));

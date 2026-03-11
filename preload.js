@@ -8,4 +8,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     startAreaCapture: () => ipcRenderer.invoke('start-area-capture'),
     onScanImage: (callback) => ipcRenderer.on('scan-image', (event, data) => callback(data)),
     onCaptureCancelled: (callback) => ipcRenderer.on('capture-cancelled', () => callback()),
+    openExternal: (url) => ipcRenderer.invoke('open-external', url),
 });

@@ -73,12 +73,35 @@ function renderTextResult(data) {
     const url = document.createElement('div');
     url.className = 'result-url';
     url.textContent = data.url || '';
+    url.style.cursor = 'pointer';
+    url.addEventListener('click', () => {
+        window.electronAPI.openExternal(data.url);
+    });
 
     textResult.innerHTML = '';
     textResult.appendChild(title);
     textResult.appendChild(info);
     if (data.url) {
         textResult.appendChild(url);
+    }
+
+    const candidates = data.candidates || [];
+    if (candidates.length > 0) {
+        const divider = document.createElement('div');
+        divider.className = 'candidates-divider';
+        divider.textContent = 'Other options';
+        textResult.appendChild(divider);
+
+        candidates.forEach(candidate => {
+            const el = document.createElement('div');
+            el.className = 'candidate-item';
+            el.textContent = candidate.title;
+            el.addEventListener('click', () => {
+                searchInput.value = candidate.title;
+                performTextSearch();
+            });
+            textResult.appendChild(el);
+        });
     }
 }
 
