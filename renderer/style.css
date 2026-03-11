@@ -1,0 +1,248 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: transparent;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #e8e8e8;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.overlay {
+    background: rgba(15, 15, 20, 0.92);
+    border: 1px solid rgba(255, 220, 80, 0.3);
+    border-radius: 10px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+/* Title bar */
+.title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(255, 220, 80, 0.08);
+    border-bottom: 1px solid rgba(255, 220, 80, 0.2);
+    -webkit-app-region: drag;
+    cursor: move;
+}
+
+.title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffdc50;
+    letter-spacing: 0.5px;
+}
+
+.close-btn {
+    -webkit-app-region: no-drag;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    background: rgba(255, 80, 80, 0.3);
+    color: #ff6060;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #888;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+    color: #ccc;
+}
+
+.tab.active {
+    color: #ffdc50;
+    border-bottom: 2px solid #ffdc50;
+}
+
+/* Tab content */
+.tab-content {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    padding: 14px;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+/* Search row */
+.search-row {
+    display: flex;
+    gap: 8px;
+}
+
+input[type="text"] {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #e8e8e8;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+}
+
+input[type="text"]:focus {
+    border-color: rgba(255, 220, 80, 0.5);
+}
+
+button#search-btn {
+    background: #ffdc50;
+    color: #111;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button#search-btn:hover {
+    background: #ffe87a;
+}
+
+button#search-btn:disabled {
+    background: #555;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* Area button */
+.area-btn {
+    background: rgba(255, 220, 80, 0.12);
+    border: 1px solid rgba(255, 220, 80, 0.4);
+    border-radius: 8px;
+    color: #ffdc50;
+    padding: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: center;
+}
+
+.area-btn:hover {
+    background: rgba(255, 220, 80, 0.22);
+}
+
+.area-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Hint text */
+.hint {
+    color: #888;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.hint small {
+    color: #666;
+    font-size: 11px;
+}
+
+/* Result box */
+.result-box {
+    flex: 1;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.result-box:empty::before {
+    content: 'Results will appear here...';
+    color: #555;
+}
+
+.result-box .loading {
+    color: #888;
+    font-style: italic;
+}
+
+.result-box .error {
+    color: #ff6060;
+}
+
+.result-box .result-title {
+    color: #ffdc50;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.result-box .result-url {
+    color: #5aafff;
+    font-size: 11px;
+    margin-top: 8px;
+    word-break: break-all;
+}
+
+.result-box .scan-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.result-box .scan-item {
+    background: rgba(255, 220, 80, 0.08);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+/* Scrollbar */
+.result-box::-webkit-scrollbar {
+    width: 4px;
+}
+
+.result-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.result-box::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+}

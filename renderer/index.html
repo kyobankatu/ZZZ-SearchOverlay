@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZZZ Search Overlay</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="overlay">
+        <div class="title-bar" id="drag-handle">
+            <span class="title">⚡ ZZZ Search</span>
+            <button class="close-btn" id="close-btn">✕</button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="text">Text Search</button>
+            <button class="tab" data-tab="area">Area Search</button>
+        </div>
+
+        <!-- Text Search Tab -->
+        <div class="tab-content active" id="tab-text">
+            <div class="search-row">
+                <input type="text" id="search-input" placeholder="Search ZZZ terms..." autocomplete="off" />
+                <button id="search-btn">Go</button>
+            </div>
+            <div id="text-result" class="result-box"></div>
+        </div>
+
+        <!-- Area Search Tab -->
+        <div class="tab-content" id="tab-area">
+            <p class="hint">
+                Click the button below, then drag to select an area on the game screen.<br>
+                <small>ZZZ must be in borderless windowed mode.</small>
+            </p>
+            <button id="area-btn" class="area-btn">Select Area on Screen</button>
+            <div id="area-result" class="result-box"></div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
