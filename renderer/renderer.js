@@ -105,6 +105,11 @@ areaBtn.addEventListener('click', async () => {
     }
 });
 
+// Re-enable the button if the user cancels area selection with Esc
+window.electronAPI.onCaptureCancelled(() => {
+    areaBtn.disabled = false;
+});
+
 // Receive cropped image from main process after area selection
 window.electronAPI.onScanImage(async (dataUrl) => {
     areaBtn.disabled = false;

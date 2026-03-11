@@ -171,6 +171,7 @@ ipcMain.handle('cancel-capture', async () => {
     }
     mainWindow.show();
     mainWindow.focus();
+    mainWindow.webContents.send('capture-cancelled');
     return true;
 });
 
