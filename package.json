@@ -11,7 +11,8 @@
         "appId": "com.zzz.search-overlay",
         "productName": "ZZZ Search Overlay",
         "win": {
-            "target": "nsis"
+            "target": "nsis",
+            "icon": "build/icon.ico"
         }
     },
     "devDependencies": {
