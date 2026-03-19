@@ -20,5 +20,8 @@
         "cross-env": "^7.0.0",
         "electron": "^33.0.0",
         "electron-builder": "^25.0.0"
+    },
+    "dependencies": {
+        "dotenv": "^17.3.1"
     }
 }

@@ -9,6 +9,7 @@ const {
     shell
 } = require('electron');
 const path = require('path');
+require('dotenv').config();
 const { execFile } = require('child_process');
 const fs = require('fs');
 const os = require('os');
