@@ -14,7 +14,12 @@ const { execFile } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000';
+const apiBaseUrlFromEnv = process.env.API_BASE_URL?.trim();
+const API_BASE_URL = apiBaseUrlFromEnv ? apiBaseUrlFromEnv.replace(/\/+$/, '') : null;
+
+if (!API_BASE_URL) {
+    throw new Error('API_BASE_URL is required. Set it in .env.');
+}
 
 let mainWindow = null;
 let captureWindow = null;

@@ -1,9 +1,14 @@
-let apiBaseUrl = 'http://localhost:5000';
+let apiBaseUrl = null;
 
 // Load API URL from main process
-window.electronAPI.getApiUrl().then(url => {
+const apiBaseUrlReady = window.electronAPI.getApiUrl().then(url => {
     apiBaseUrl = url;
+    return apiBaseUrl;
 });
+
+async function getApiBaseUrl() {
+    return apiBaseUrl || apiBaseUrlReady;
+}
 
 // Tab switching
 document.querySelectorAll('.tab').forEach(tab => {
@@ -39,7 +44,7 @@ async function performTextSearch() {
     textResult.innerHTML = '<span class="loading">Searching...</span>';
 
     try {
-        const response = await fetch(`${apiBaseUrl}/get_info`, {
+        const response = await fetch(`${await getApiBaseUrl()}/get_info`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ word }),
@@ -150,7 +155,7 @@ window.electronAPI.onScanImage(async (dataUrl) => {
         const formData = new FormData();
         formData.append('image', blob, 'capture.png');
 
-        const response = await fetch(`${apiBaseUrl}/scan`, {
+        const response = await fetch(`${await getApiBaseUrl()}/scan`, {
             method: 'POST',
             body: formData,
         });

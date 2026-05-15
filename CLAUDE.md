@@ -48,7 +48,7 @@ Wait for explicit approval before proceeding.
 - Avoid using goto
 - Consider readability
 
-This is an **Electron desktop overlay** for the game Zenless Zone Zero. It provides two search modes (text query and screenshot area scan) backed by a separate local API server (default: `http://localhost:5000`).
+This is an **Electron desktop overlay** for the game Zenless Zone Zero. It provides two search modes (text query and screenshot area scan) backed by a separate API server configured by `API_BASE_URL` in `.env`.
 
 ### Multi-Window Design
 

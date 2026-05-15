@@ -1,10 +1,10 @@
 # ZZZ Search Overlay
 
-An Electron desktop overlay for **Zenless Zone Zero** that lets you quickly look up game terms while playing. Supports text search and screenshot-based area scan, powered by a local API server.
+An Electron desktop overlay for **Zenless Zone Zero** that lets you quickly look up game terms while playing. Supports text search and screenshot-based area scan, powered by an external API server.
 
 ## Features
 
-- **Text Search** — type a ZZZ term and get info + related links from the local API
+- **Text Search** — type a ZZZ term and get info + related links from the API
 - **Area Search** — drag a selection on the game screen; the overlay OCR-scans it and detects ZZZ terms
 - Always-on-top transparent window, toggled by `Ctrl+Shift+Z`
 - Draggable window; works over the game in borderless windowed mode
@@ -12,7 +12,7 @@ An Electron desktop overlay for **Zenless Zone Zero** that lets you quickly look
 ## Requirements
 
 - [Node.js](https://nodejs.org/) (for development)
-- A local API server running at `http://localhost:5000` (not included in this repo)
+- API server access configured by `API_BASE_URL` in `.env` (not included in this repo)
   - `POST /get_info` — body: `{ "word": "..." }` → returns term info
   - `POST /scan` — multipart form with `image` field → returns `{ "filtered_in": [...] }`
 
@@ -20,6 +20,12 @@ An Electron desktop overlay for **Zenless Zone Zero** that lets you quickly look
 
 ```bash
 npm install
+```
+
+Create `.env`:
+
+```env
+API_BASE_URL=https://your-api.example.com/
 ```
 
 ## Usage
